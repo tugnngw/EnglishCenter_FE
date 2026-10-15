@@ -1,8 +1,6 @@
 /* =====================================================
  * English Center Platform — Global Stylesheet
- * Base CSS variables (kept for backwards compatibility
- * with the old Vite template); Tailwind directives injected
- * below so utility classes work across the app.
+ * Typography: Plus Jakarta Sans (premium EdTech font)
  * ===================================================== */
 @tailwind base;
 @tailwind components;
@@ -11,15 +9,17 @@
 :root {
   --text: #475569;
   --text-h: #0f172a;
-  --bg: #f8fafc;
+  --bg: #f4f6f8;
   --border: #e2e8f0;
   --code-bg: #f1f5f9;
-  --accent: #4f46e5;
-  --accent-bg: rgba(79, 70, 229, 0.08);
-  --accent-border: rgba(79, 70, 229, 0.4);
+  --accent: #0052cc;
+  --accent-bg: rgba(0, 82, 204, 0.08);
+  --accent-border: rgba(0, 82, 204, 0.4);
 
-  --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Be Vietnam Pro', 'Plus Jakarta Sans', 'Inter', system-ui,
+    -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Be Vietnam Pro', 'Plus Jakarta Sans', 'Inter', system-ui,
+    -apple-system, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 15px/1.55 var(--sans);
@@ -42,21 +42,32 @@ body,
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  font-family: 'Be Vietnam Pro', 'Plus Jakarta Sans', 'Inter', system-ui,
+    -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'cv11', 'ss01';
+  letter-spacing: -0.005em;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1,
 h2,
 h3,
-h4 {
-  font-family: var(--heading);
+h4,
+h5,
+h6 {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   font-weight: 700;
   color: var(--text-h);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.018em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -71,7 +82,6 @@ textarea {
   font: inherit;
 }
 
-/* Custom scrollbar tinh tế cho Webkit */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -82,4 +92,12 @@ textarea {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+img,
+video,
+svg,
+canvas {
+  max-width: 100%;
+  height: auto;
 }

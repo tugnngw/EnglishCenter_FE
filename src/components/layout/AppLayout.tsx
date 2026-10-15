@@ -13,7 +13,6 @@
  * Role Switcher kết nối trực tiếp với `useAuthStore.setRole()` để chuyển
  * góc nhìn vai trò tức thì mà không cần reload trang.
  */
-
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import {

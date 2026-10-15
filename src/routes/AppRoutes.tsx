@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { AppLayout } from '@/components/layout/AppLayout';
+import { AppLayout } from '@/layouts/AppLayout';
 import LoginPage from '@/pages/auth/LoginPage';
 import RegisterPage from '@/pages/auth/RegisterPage';
 import CourseDetailPage from '@/pages/courses/CourseDetailPage';

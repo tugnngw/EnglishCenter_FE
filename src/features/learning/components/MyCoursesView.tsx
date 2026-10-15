@@ -1,27 +1,26 @@
 /**
- * MyCoursesView — Màn hình "Khóa học của tôi"
+ * MyCoursesView — Danh sách "Khóa học của tôi" (Prep.vn Capsule Cards)
  * -----------------------------------------------------------
- * Hiển thị:
- *   - Tiêu đề + mô tả ngắn
- *   - 3 thẻ thống kê nhanh (đang học, thời lượng đã học, bài tập cần nộp)
- *   - Bộ lọc "Tất cả / Đang học / Đã hoàn thành"
- *   - Danh sách thẻ khóa học dạng grid (ảnh 16:9, badge chứng chỉ,
- *     tên khóa, mentor, thanh tiến độ, bài kế tiếp, nút Tiếp tục học)
+ *  - Thẻ khóa học dạng bo tròn lớn (rounded-3xl), p-7, shadow-md
+ *  - 2 kiểu: Gradient nổi bật (xanh dương / xanh lá) + Trắng học viên
+ *  - Thanh tiến độ dày dặn, bo 2 đầu
+ *  - Hộp "Bài tiếp theo" bg-slate-50 rounded-2xl
+ *  - CTA viên thuốc bg-[#0052CC] h-11
  */
 
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  ArrowUpRight,
+  Play,
+  Trophy,
   BookOpen,
   Clock,
   AlertCircle,
   Filter,
   TrendingUp,
   GraduationCap,
-  ChevronRight,
-  PlayCircle,
   CheckCircle2,
-  Trophy,
 } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -68,14 +67,14 @@ export const MyCoursesView: React.FC = () => {
       {/* ============== HEADER ============== */}
       <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">
-            <GraduationCap className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.18em] text-slate-500">
+            <GraduationCap className="w-3.5 h-3.5 text-[#0052CC]" />
             Phòng học của học viên
           </div>
-          <h1 className="mt-1.5 text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="mt-2 text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Khóa học của tôi
           </h1>
-          <p className="mt-1.5 text-sm text-slate-600 max-w-2xl">
+          <p className="mt-2 text-sm text-slate-600 max-w-2xl">
             Theo dõi tiến độ học tập và tiếp tục các bài giảng đang diễn ra.
           </p>
         </div>
@@ -91,12 +90,11 @@ export const MyCoursesView: React.FC = () => {
 
       {/* ============== STATS ============== */}
       <section
-        className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+        className="grid grid-cols-1 sm:grid-cols-3 gap-5"
         aria-label="Thống kê học tập"
       >
         <StatCard
           icon={BookOpen}
-          iconTone="primary"
           label="Khóa học đang học"
           value={MOCK_LEARNING_STATS.inProgressCourses}
           unit="khóa học"
@@ -104,7 +102,6 @@ export const MyCoursesView: React.FC = () => {
         />
         <StatCard
           icon={Clock}
-          iconTone="ai"
           label="Thời lượng đã học"
           value={MOCK_LEARNING_STATS.studiedHours}
           unit="giờ"
@@ -112,7 +109,6 @@ export const MyCoursesView: React.FC = () => {
         />
         <StatCard
           icon={AlertCircle}
-          iconTone="warning"
           label="Bài tập cần hoàn thành"
           value={MOCK_LEARNING_STATS.pendingHomeworks}
           unit="bài tập"
@@ -126,12 +122,13 @@ export const MyCoursesView: React.FC = () => {
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
         aria-label="Bộ lọc khóa học"
       >
-        <div className="inline-flex items-center gap-1.5 p-1 rounded-input bg-slate-100 border border-slate-200/70 self-start sm:self-auto">
+        <div className="inline-flex items-center gap-1 p-1 rounded-full bg-white border border-slate-200 shadow-sm self-start sm:self-auto">
           <FilterButton
             active={filter === 'all'}
             label="Tất cả khóa học"
             onClick={() => setFilter('all')}
             count={MOCK_ENROLLED_COURSES.length}
+            icon={Filter}
           />
           <FilterButton
             active={filter === 'in-progress'}
@@ -152,6 +149,7 @@ export const MyCoursesView: React.FC = () => {
                 (c) => c.progress.status === 'COMPLETED',
               ).length
             }
+            icon={CheckCircle2}
           />
         </div>
         <p className="text-xs text-slate-500">
@@ -169,7 +167,7 @@ export const MyCoursesView: React.FC = () => {
         />
       ) : (
         <section
-          className="grid grid-cols-1 md:grid-cols-2 gap-5"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
           aria-label="Danh sách khóa học"
         >
           {filtered.map((ec) => (
@@ -190,11 +188,10 @@ export const MyCoursesView: React.FC = () => {
 };
 
 /* ============================================================
- *  Sub components
+ *  Stat Card — viên thuốc phẳng
  * ============================================================ */
 interface StatCardProps {
   icon: React.ElementType;
-  iconTone: 'primary' | 'ai' | 'warning';
   label: string;
   value: number;
   unit: string;
@@ -203,81 +200,85 @@ interface StatCardProps {
 }
 const StatCard: React.FC<StatCardProps> = ({
   icon: Icon,
-  iconTone,
   label,
   value,
   unit,
   accentHint,
   warning = false,
 }) => {
-  const toneClass: Record<typeof iconTone, string> = {
-    primary: 'bg-primary-tint text-primary',
-    ai: 'bg-ai/10 text-ai',
-    warning: 'bg-status-warning-bg text-status-warning',
-  };
   return (
-    <Card className="relative overflow-hidden" noPadding>
-      <div className="p-5 flex items-start gap-4">
-        <div
-          className={cn(
-            'w-12 h-12 rounded-input flex items-center justify-center shrink-0',
-            toneClass[iconTone],
-          )}
-        >
-          <Icon className="w-5 h-5" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">
-            {label}
-          </p>
-          <p className="mt-1 flex items-baseline gap-1.5">
-            <span className="text-2xl font-extrabold text-slate-900 tabular-nums">
-              {value}
-            </span>
-            <span className="text-sm font-semibold text-slate-500">{unit}</span>
-            {warning && (
-              <Badge variant="warning" size="sm" className="ml-1">
-                Cảnh báo
-              </Badge>
-            )}
-          </p>
-          <p className="mt-1 text-xs text-slate-500 line-clamp-1">
-            {accentHint}
-          </p>
-        </div>
+    <div
+      className={cn(
+        'relative rounded-3xl bg-white border border-slate-200',
+        'p-6 flex items-start gap-4',
+        'shadow-sm hover:shadow-md transition-shadow',
+      )}
+    >
+      <div
+        className={cn(
+          'w-12 h-12 rounded-2xl flex items-center justify-center shrink-0',
+          warning
+            ? 'bg-amber-50 text-amber-600'
+            : 'bg-blue-50 text-[#0052CC]',
+        )}
+      >
+        <Icon className="w-5 h-5" />
       </div>
-    </Card>
+      <div className="flex-1 min-w-0">
+        <p className="text-[11px] font-extrabold uppercase tracking-widest text-slate-500">
+          {label}
+        </p>
+        <p className="mt-1.5 flex items-baseline gap-1.5">
+          <span className="text-2xl font-extrabold text-slate-900 tabular-nums">
+            {value}
+          </span>
+          <span className="text-sm font-semibold text-slate-500">{unit}</span>
+          {warning && (
+            <Badge variant="warning" size="sm" className="ml-1">
+              Cảnh báo
+            </Badge>
+          )}
+        </p>
+        <p className="mt-1 text-xs text-slate-500 line-clamp-1">{accentHint}</p>
+      </div>
+    </div>
   );
 };
 
+/* ============================================================
+ *  Filter Button — pill
+ * ============================================================ */
 interface FilterButtonProps {
   active: boolean;
   label: string;
   count: number;
   onClick: () => void;
+  icon?: React.ElementType;
 }
 const FilterButton: React.FC<FilterButtonProps> = ({
   active,
   label,
   count,
   onClick,
+  icon: Icon,
 }) => (
   <button
     type="button"
     onClick={onClick}
     aria-pressed={active}
     className={cn(
-      'inline-flex items-center gap-1.5 h-8 px-3 rounded-md text-xs font-bold transition-all',
+      'inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full text-xs font-bold transition-all',
       active
-        ? 'bg-white text-primary shadow-sm'
+        ? 'bg-[#0052CC] text-white shadow-sm'
         : 'text-slate-600 hover:text-slate-900',
     )}
   >
+    {Icon && <Icon className="w-3.5 h-3.5" />}
     {label}
     <span
       className={cn(
-        'inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded text-[10px] font-extrabold',
-        active ? 'bg-primary/10 text-primary' : 'bg-slate-200 text-slate-500',
+        'inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-extrabold',
+        active ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500',
       )}
     >
       {count}
@@ -285,6 +286,9 @@ const FilterButton: React.FC<FilterButtonProps> = ({
   </button>
 );
 
+/* ============================================================
+ *  Course Card — Capsule Card chuẩn Prep.vn
+ * ============================================================ */
 interface CourseCardProps {
   enrolled: EnrolledCourse;
   onContinue: () => void;
@@ -292,115 +296,202 @@ interface CourseCardProps {
 const CourseCard: React.FC<CourseCardProps> = ({ enrolled, onContinue }) => {
   const { course, progress, nextLesson, mentor } = enrolled;
   const isCompleted = progress.status === 'COMPLETED';
+  const percent = progress.percent;
 
-  return (
-    <Card className="overflow-hidden flex flex-col p-0" hoverable>
-      {/* Cover 16:9 */}
-      <div className="relative aspect-[16/9] overflow-hidden bg-slate-200">
-        <img
-          src={course.coverUrl}
-          alt={course.title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).style.display = 'none';
-          }}
+  // Kiểu 1: Thẻ Gradient (nổi bật) — dùng cho khóa học IELTS/TOEIC flagship
+  const isFlagship = course.certificate === 'IELTS';
+  const gradientClass = cn(
+    'rounded-3xl p-7 overflow-hidden relative',
+    'transition-all duration-300',
+    isFlagship
+      ? 'bg-gradient-to-br from-[#0052CC] to-[#0066FF] text-white shadow-md hover:shadow-xl hover:-translate-y-1'
+      : 'bg-gradient-to-br from-[#00A859] to-[#00C853] text-white shadow-md hover:shadow-xl hover:-translate-y-1',
+  );
+
+  if (isFlagship || isCompleted) {
+    return (
+      <div className={gradientClass}>
+        {/* Decorative blur nhẹ */}
+        <div
+          className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none"
+          aria-hidden="true"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-900/60 via-transparent to-transparent" />
-        <div className="absolute top-3 left-3 flex items-center gap-2 flex-wrap">
-          <Badge variant={CERT_BADGE[course.certificate]} size="md">
+        <div className="relative flex items-start justify-between gap-3">
+          <Badge
+            variant={CERT_BADGE[course.certificate]}
+            size="md"
+            className="bg-white/15 text-white border-white/30 backdrop-blur-sm"
+          >
             {course.certificate}
           </Badge>
           {isCompleted && (
-            <Badge variant="success" size="md" icon={CheckCircle2}>
+            <Badge
+              variant="success"
+              size="md"
+              icon={CheckCircle2}
+              className="bg-white/15 text-white border-white/30 backdrop-blur-sm"
+            >
               Hoàn thành
             </Badge>
           )}
         </div>
-        <div className="absolute bottom-3 right-3">
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] font-extrabold uppercase tracking-wider text-slate-700">
-            {CERT_LABEL[course.certificate]}
-          </span>
-        </div>
-      </div>
+        <h2 className="relative mt-5 text-xl sm:text-2xl font-extrabold leading-snug line-clamp-2">
+          {course.title}
+        </h2>
+        <p className="relative mt-2 text-sm text-white/85 line-clamp-2">
+          {mentor.fullName} · {mentor.title}
+        </p>
 
-      {/* Body */}
-      <div className="p-5 flex-1 flex flex-col gap-4">
-        <div>
-          <h2 className="text-lg font-extrabold text-slate-900 leading-snug line-clamp-2">
-            {course.title}
-          </h2>
-          <div className="mt-2 flex items-center gap-2">
-            <img
-              src={mentor.avatarUrl}
-              alt={mentor.fullName}
-              className="w-7 h-7 rounded-full bg-slate-100 border border-white shadow-sm"
-            />
-            <div className="min-w-0 leading-tight">
-              <p className="text-xs font-bold text-slate-800 truncate">
-                {mentor.fullName}
-              </p>
-              <p className="text-[10px] text-ai font-semibold truncate">
-                {mentor.title}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Progress */}
-        <div>
-          <div className="flex items-center justify-between text-xs mb-1.5">
-            <span className="font-bold text-slate-600 inline-flex items-center gap-1">
-              <TrendingUp className="w-3.5 h-3.5 text-primary" />
-              Đã hoàn thành
+        {/* Progress bar dày dặn */}
+        <div className="relative mt-6">
+          <div className="flex items-center justify-between text-xs mb-2">
+            <span className="font-bold text-white/85 inline-flex items-center gap-1.5">
+              <TrendingUp className="w-3.5 h-3.5" />
+              Tiến độ học tập
             </span>
-            <span className="font-extrabold text-primary tabular-nums">
-              {progress.percent}%
+            <span className="font-extrabold text-white tabular-nums">
+              {percent}%
             </span>
           </div>
           <div
-            className="h-2 rounded-full bg-slate-100 overflow-hidden"
+            className="h-3 rounded-full bg-white/20 overflow-hidden"
             role="progressbar"
-            aria-valuenow={progress.percent}
+            aria-valuenow={percent}
             aria-valuemin={0}
             aria-valuemax={100}
           >
             <div
-              className="h-full bg-primary rounded-full transition-all"
-              style={{ width: `${progress.percent}%` }}
+              className="h-full bg-white rounded-full transition-all"
+              style={{ width: `${percent}%` }}
             />
           </div>
         </div>
 
-        {/* Next lesson */}
-        <div className="rounded-input bg-slate-50 border border-slate-200/70 p-3 flex items-start gap-2.5">
-          <PlayCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-          <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
-              Bài tiếp theo
-            </p>
-            <p className="text-xs font-bold text-slate-800 mt-0.5 line-clamp-2">
-              Bài {String(nextLesson.order).padStart(2, '0')} — {nextLesson.title}
-            </p>
+        {/* CTA: nút tròn mũi tên trắng ở góc dưới */}
+        <div className="relative mt-7 flex items-center justify-between">
+          <div className="text-xs text-white/80">
+            {isCompleted ? 'Đã hoàn thành' : 'Tiếp tục lộ trình của bạn'}
           </div>
+          <button
+            type="button"
+            onClick={onContinue}
+            className={cn(
+              'w-12 h-12 rounded-full bg-white text-[#0052CC]',
+              'inline-flex items-center justify-center',
+              'shadow-lg hover:scale-105 active:scale-95 transition-transform',
+            )}
+            aria-label={isCompleted ? 'Xem lại khóa học' : 'Tiếp tục học'}
+          >
+            <ArrowUpRight className="w-5 h-5" strokeWidth={2.5} />
+          </button>
         </div>
-
-        {/* CTA */}
-        <Button
-          variant="primary"
-          size="md"
-          fullWidth
-          rightIcon={ChevronRight}
-          onClick={onContinue}
-          className="mt-auto"
-        >
-          {isCompleted ? 'Xem lại khóa học' : 'Tiếp tục học ngay'}
-        </Button>
       </div>
-    </Card>
+    );
+  }
+
+  // Kiểu 2: Thẻ Trắng Học viên
+  return (
+    <div
+      className={cn(
+        'rounded-3xl bg-white border border-slate-200',
+        'p-7 shadow-md hover:shadow-xl hover:-translate-y-1',
+        'transition-all duration-300',
+      )}
+    >
+      {/* Tag nổi chứng chỉ */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <Badge variant={CERT_BADGE[course.certificate]} size="md">
+          {course.certificate}
+        </Badge>
+        <span className="inline-flex items-center h-6 px-2.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-extrabold uppercase tracking-wider">
+          {CERT_LABEL[course.certificate]}
+        </span>
+      </div>
+
+      {/* Tiêu đề + Mentor */}
+      <h2 className="mt-5 text-lg sm:text-xl font-extrabold text-slate-900 leading-snug line-clamp-2">
+        {course.title}
+      </h2>
+      <div className="mt-3 flex items-center gap-2.5">
+        <img
+          src={mentor.avatarUrl}
+          alt={mentor.fullName}
+          className="w-8 h-8 rounded-full bg-slate-100 border-2 border-white shadow-sm"
+        />
+        <div className="min-w-0 leading-tight">
+          <p className="text-sm font-bold text-slate-800 truncate">
+            {mentor.fullName}
+          </p>
+          <p className="text-[11px] text-slate-500 font-semibold truncate">
+            {mentor.title}
+          </p>
+        </div>
+      </div>
+
+      {/* Progress bar dày dặn */}
+      <div className="mt-6">
+        <div className="flex items-center justify-between text-xs mb-2">
+          <span className="font-bold text-slate-600 inline-flex items-center gap-1.5">
+            <TrendingUp className="w-3.5 h-3.5 text-[#0052CC]" />
+            Đã hoàn thành
+          </span>
+          <span className="font-extrabold text-[#0052CC] tabular-nums">
+            {percent}%
+          </span>
+        </div>
+        <div
+          className="h-3 rounded-full bg-slate-100 overflow-hidden"
+          role="progressbar"
+          aria-valuenow={percent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div
+            className="h-full bg-[#0052CC] rounded-full transition-all"
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Hộp "Bài tiếp theo" */}
+      <div className="mt-5 rounded-2xl bg-slate-50 border border-slate-100 p-4 flex items-start gap-3">
+        <span
+          className="w-9 h-9 rounded-full bg-white border border-slate-200 inline-flex items-center justify-center shrink-0 shadow-sm"
+          aria-hidden="true"
+        >
+          <Play className="w-4 h-4 text-[#0052CC] fill-[#0052CC]" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+            Bài tiếp theo
+          </p>
+          <p className="text-sm font-bold text-slate-800 mt-0.5 line-clamp-2">
+            Bài {String(nextLesson.order).padStart(2, '0')} — {nextLesson.title}
+          </p>
+        </div>
+      </div>
+
+      {/* CTA viên thuốc */}
+      <button
+        type="button"
+        onClick={onContinue}
+        className={cn(
+          'mt-6 w-full h-11 px-6 rounded-full',
+          'bg-[#0052CC] hover:bg-[#0040A8] text-white text-sm font-bold',
+          'inline-flex items-center justify-center gap-2',
+          'shadow-sm hover:shadow-md transition-all',
+        )}
+      >
+        {isCompleted ? 'Xem lại khóa học' : 'Tiếp tục học ngay'}
+        <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+      </button>
+    </div>
   );
 };
 
+/* ============================================================
+ *  Empty State
+ * ============================================================ */
 interface EmptyStateProps {
   isCompletedFilter: boolean;
   onReset: () => void;
@@ -409,8 +500,8 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   isCompletedFilter,
   onReset,
 }) => (
-  <Card className="text-center py-16">
-    <div className="w-16 h-16 rounded-card bg-slate-100 flex items-center justify-center mx-auto mb-4">
+  <Card className="rounded-3xl text-center py-16">
+    <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
       <BookOpen className="w-7 h-7 text-slate-400" />
     </div>
     <h3 className="text-lg font-extrabold text-slate-900">
