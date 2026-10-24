@@ -6,3 +6,5 @@ export { Badge } from "./Badge";
 export type { BadgeProps, BadgeVariant, BadgeSize } from "./Badge";
 export { Loading } from "./Loading";
 export { ProtectedRoute } from "./ProtectedRoute";
+export { Modal } from "./Modal";
+export type { ModalProps } from "./Modal";

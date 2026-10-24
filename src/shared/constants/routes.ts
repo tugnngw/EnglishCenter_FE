@@ -11,6 +11,10 @@ export const ROUTES = {
   COURSE_DETAIL: (id: string) => `/courses/${id}` as const,
   EXAMS: "/exams",
   EXAM_ROOM: (id: string) => `/exams/${id}` as const,
+  EXAM_DETAIL: (examId: string) => `/exams/${examId}` as const,
+  EXAM_ATTEMPT: (attemptId: string) => `/exams/attempts/${attemptId}` as const,
+  EXAM_RESULT: (attemptId: string) => `/exams/attempts/${attemptId}/result` as const,
+  EXAM_HISTORY: "/exams/history",
   MY_LEARNING: "/my-learning",
   MY_COURSES: "/my-courses",
   STUDY_ROOM: (slug: string) => `/study/${slug}` as const,
@@ -37,6 +41,7 @@ export const ROUTES = {
   MENTOR: {
     HOME: "/mentor",
     GRADING: "/mentor/grading",
+    EXAM_GRADING: "/mentor/exam-grading",
   },
 
   // Admin
@@ -47,5 +52,7 @@ export const ROUTES = {
     HOME: "/admin",
     ACCOUNTS: "/admin/accounts",
     REVENUE: "/admin/revenue",
+    EXAMS: "/admin/exams",
+    EXAM_EDITOR: (examId: string) => `/admin/exams/${examId}` as const,
   },
 } as const;

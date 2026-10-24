@@ -32,6 +32,7 @@ export function setupInterceptors(client: AxiosInstance) {
           (error.response?.data as { message?: string })?.message ??
           error.message ??
           "Lỗi không xác định",
+        code: (error.response?.data as { code?: number })?.code,
       };
 
       return Promise.reject(apiError);
