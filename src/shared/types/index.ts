@@ -1,4 +1,5 @@
 export type { ApiResponse, ApiError, Page } from "./api";
+export type { ServerResponse, ServerPage } from "./api";
 export { successResponse, errorResponse } from "./api";
 export type { User } from "./user";
 export type {
@@ -14,15 +15,30 @@ export type {
   CourseDetailResponse,
 } from "./course";
 export type {
-  Exam,
-  ExamPassage,
-  Question,
+  ExamScope,
+  ExamType,
+  ExamStatus,
   QuestionType,
-  McqOption,
-  AnswerValue,
-  ExamResult,
-  ExamListResponse,
-  ExamDetailResponse,
+  DifficultyLevel,
+  AttemptStatus,
+  ExamSummary,
+  ExamDetail,
+  ExamSection,
+  ExamQuestion,
+  QuestionOption,
+  SavedAnswer,
+  AttemptDetail,
+  AttemptSummary,
+  AttemptResult,
+  SectionScore,
+  AnswerResult,
+  AnswerItemRequest,
+} from "./exam";
+export {
+  EXAM_TYPE_LABEL,
+  QUESTION_TYPE_LABEL,
+  ATTEMPT_STATUS_LABEL,
+  EXAM_STATUS_LABEL,
 } from "./exam";
 export type {
   EnrolledCourse,

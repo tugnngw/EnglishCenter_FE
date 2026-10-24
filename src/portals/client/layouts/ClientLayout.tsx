@@ -35,6 +35,15 @@ export const ClientLayout: React.FC = () => {
     if (location.pathname.startsWith("/courses/")) {
       return "Chi tiết khóa học";
     }
+    if (location.pathname === ROUTES.EXAM_HISTORY) {
+      return "Lịch sử thi";
+    }
+    if (location.pathname.startsWith("/exams/attempts/")) {
+      return location.pathname.endsWith("/result") ? "Kết quả bài thi" : "Phòng thi trực tuyến";
+    }
+    if (location.pathname.startsWith("/exams/")) {
+      return "Chi tiết đề thi";
+    }
     if (location.pathname.startsWith("/study/")) {
       return "Phòng học trực tuyến";
     }
