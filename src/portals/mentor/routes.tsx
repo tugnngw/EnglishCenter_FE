@@ -12,6 +12,7 @@ import { ROLES } from "@/shared/constants/roles";
 import { MentorLayout } from "./layouts/MentorLayout";
 import MentoringDashboardPage from "./pages/MentoringDashboardPage";
 import GradingPage from "./pages/GradingPage";
+import ExamGradingPage from "./pages/ExamGradingPage";
 
 export default function MentorRoutes() {
   return (
@@ -21,6 +22,7 @@ export default function MentorRoutes() {
           <Route index element={<MentoringDashboardPage />} />
           <Route path="grading" element={<GradingPage />} />
           <Route path="assignments" element={<GradingPage />} />
+          <Route path="exam-grading" element={<ExamGradingPage />} />
           <Route path="*" element={<Navigate to="/mentor" replace />} />
         </Route>
       </Route>

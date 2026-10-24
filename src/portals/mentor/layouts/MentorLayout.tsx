@@ -17,6 +17,7 @@ import {
   Sparkles,
   ChevronRight,
   ShieldAlert,
+  ClipboardCheck,
 } from "lucide-react";
 import { useAuthStore } from "@/shared/auth";
 import { Badge } from "@/shared/components/Badge";
@@ -37,6 +38,12 @@ const NAV_ITEMS = [
     label: "Chấm bài & Feedback",
     icon: FileEdit,
     badge: "3 bài",
+  },
+  {
+    to: ROUTES.MENTOR.EXAM_GRADING,
+    end: false,
+    label: "Chấm bài thi",
+    icon: ClipboardCheck,
   },
 ];
 
