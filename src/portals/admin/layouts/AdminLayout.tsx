@@ -15,6 +15,7 @@ import {
   ExternalLink,
   ChevronRight,
   Sparkles,
+  FileCheck2,
 } from "lucide-react";
 import { useAuthStore } from "@/shared/auth";
 import { Badge } from "@/shared/components/Badge";
@@ -27,6 +28,12 @@ const ADMIN_NAV = [
     end: true,
     label: "Quản lý Khóa học",
     icon: BookOpen,
+  },
+  {
+    to: ROUTES.ADMIN.EXAMS,
+    end: false,
+    label: "Quản lý Đề thi",
+    icon: FileCheck2,
   },
   {
     to: "/admin/accounts",
